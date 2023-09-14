@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic  # type: ignore
-from sqlalchemy import Boolean, Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
@@ -15,7 +15,7 @@ Base = declarative_base()
 
 
 def get_session_maker() -> sessionmaker[AsyncSession]:
-    url = settings.db_prod if settings.environment is not None else settings.db_test
+    url = settings.db_prod if settings.environment != "TEST" else settings.db_test
     engine = create_async_engine(
         url,
         echo=False,
@@ -24,7 +24,7 @@ def get_session_maker() -> sessionmaker[AsyncSession]:
 
 
 async def create_database() -> None:
-    url = settings.db_prod if settings.environment is not None else settings.db_test
+    url = settings.db_prod if settings.environment != "TEST" else settings.db_test
     engine = create_async_engine(
         url,
         echo=False,
@@ -46,5 +46,6 @@ class Doctor(Base):
     phoneNumber = Column(String(20), unique=True)
     createdAt = Column(DateTime, default=datetime.now())
     updateAt = Column(DateTime, onupdate=datetime.now())
+
 
 PydanticDoctor = sqlalchemy_to_pydantic(Doctor)
