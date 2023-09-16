@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class DoctorRegister(BaseModel):
     fullName: str
+    specialtyId: int
     email: str
     phoneNumber: str
 
@@ -20,3 +21,4 @@ class DoctorEdit(BaseModel):
     email: Optional[str]
     phoneNumber: Optional[str]
     fullName: Optional[str]
+    specialtyId: Optional[int]

@@ -26,7 +26,7 @@ class SpecialtyRepository:
     async def specialty_already_exist(self, id_specialty: int) -> bool:
         async with self.sessionmaker() as session:
             query = await session.execute(
-                select(Specialty).filter(Specialty.id == id_specialty)
+                select(Specialty).where(Specialty.id == id_specialty)
             )
 
         return bool(query.scalar())

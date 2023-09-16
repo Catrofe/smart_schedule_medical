@@ -33,3 +33,6 @@ class SpecialtyService:
                 request, status.HTTP_404_NOT_FOUND, "Specialty not found"
             )
         await self._repository.delete_specialty_by_id(id_specialty)
+
+    async def specialty_already_exist(self, id_specialty: int) -> bool:
+        return await self._repository.specialty_already_exist(id_specialty)
