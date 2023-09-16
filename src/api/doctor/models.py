@@ -1,7 +1,7 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
-from typing import Optional
 
 
 class DoctorRegister(BaseModel):
@@ -17,6 +17,6 @@ class DoctorOutput(DoctorRegister):
 
 
 class DoctorEdit(BaseModel):
-    email: str
-    phoneNumber: str
-    fullName: str
+    email: Optional[str]
+    phoneNumber: Optional[str]
+    fullName: Optional[str]
