@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic  # type: ignore
-from sqlalchemy import Column, DateTime, Integer, String  # PrimaryKeyConstraint
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
@@ -56,6 +56,7 @@ class Doctor(Base):
     fullName = Column(String(255))
     email = Column(String(155), unique=True)
     phoneNumber = Column(String(20), unique=True)
+    specialtyId = Column(Integer, ForeignKey("specialty.id"), nullable=False)
     createdAt = Column(DateTime, default=datetime.now())
     updateAt = Column(DateTime, onupdate=datetime.now())
 

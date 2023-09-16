@@ -1,3 +1,5 @@
+from typing import Union
+
 from sqlalchemy import delete, select
 from sqlalchemy.sql.expression import exists
 
@@ -17,7 +19,7 @@ class DoctorRepository:
 
         return PydanticDoctor.from_orm(save)
 
-    async def verify_doctor(self, body: DoctorRegister) -> bool:
+    async def verify_doctor(self, body: Union[DoctorRegister, DoctorEdit]) -> bool:
         async with self.sessionmaker() as session:
             query = await session.execute(
                 select((exists(Doctor))).filter(
@@ -25,12 +27,13 @@ class DoctorRepository:
                     | (Doctor.phoneNumber == body.phoneNumber)
                 )
             )
-        return bool(query.scalar())
+        result = query.scalar()
+        return bool(result)
 
-    async def doctor_already_exist(self, id: int) -> bool:
+    async def doctor_already_exist(self, id_doctor: int) -> bool:
         async with self.sessionmaker() as session:
             query = await session.execute(
-                select((exists(Doctor))).filter(Doctor.id == id)
+                select((exists(Doctor))).where(Doctor.id == id_doctor)
             )
         return bool(query.scalar())
 
