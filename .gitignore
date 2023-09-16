@@ -163,4 +163,8 @@ cython_debug/
 .idea
 
 gym_test.db
+schedule_medical.db
 cov.xml
+
+.run/
+.coverage
