@@ -6,6 +6,8 @@ from src.api.doctor.models import DoctorEdit, DoctorOutput, DoctorRegister
 from src.api.doctor.repository import DoctorRepository
 from src.api.specialty.service import SpecialtyService
 from src.utils.erros_util import RaiseScheduleMedical
+from src.utils.settings import Settings
+import requests
 
 
 class DoctorService:
@@ -62,3 +64,16 @@ class DoctorService:
             raise RaiseScheduleMedical(
                 request, status.HTTP_409_CONFLICT, "Doctor already exists"
             )
+
+    async def update_doctor_busy_and_lunch(self, id_doctor: int, busy_status: Optional[bool], lunch_status: Optional[bool], request: Request) -> DoctorOutput:
+        await self.validation_doctor(request, id_doctor=id_doctor)
+
+        if busy_status is not None:
+            await self._repository.update_doctor_busy(id_doctor, busy_status)
+        if lunch_status is not None:
+            await self._repository.update_doctor_lunch(id_doctor, lunch_status)
+
+        doctor = await self._repository.get_doctor_by_id(id_doctor)
+
+        if not doctor.busy and not doctor.lunch:
+            return DoctorOutput(**doctor.dict())

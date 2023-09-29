@@ -13,6 +13,8 @@ class DoctorRegister(BaseModel):
 
 class DoctorOutput(DoctorRegister):
     id: int
+    busy: bool
+    lunch: bool
     createdAt: datetime
     updateAt: Optional[datetime] = None
 

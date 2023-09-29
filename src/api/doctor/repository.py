@@ -1,6 +1,6 @@
 from typing import Union
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.sql.expression import exists
 
 from src.api.doctor.models import DoctorEdit, DoctorRegister
@@ -66,3 +66,11 @@ class DoctorRepository:
             query = await session.execute(select(Doctor))
             doctors = query.scalars()
         return [PydanticDoctor.from_orm(doctor) for doctor in doctors]
+
+    async def update_doctor_busy(self, id_doctor, busy_status) -> None:
+        async with self.sessionmaker() as session:
+            query = await session.execute(update(Doctor).where(Doctor.id == id_doctor).values(busy=busy_status))
+
+    async def update_doctor_lunch(self, id_doctor, lunch_status) -> None:
+        async with self.sessionmaker() as session:
+            query = await session.execute(update(Doctor).where(Doctor.id == id_doctor).values(lunch=lunch_status))

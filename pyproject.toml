@@ -14,6 +14,7 @@ bcrypt = "^4.0.1"
 asyncpg = "^0.28.0"
 sqlalchemy2-stubs = "^0.0.2a35"
 pydantic-sqlalchemy = "^0.0.9"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]

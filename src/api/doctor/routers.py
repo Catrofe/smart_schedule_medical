@@ -33,3 +33,13 @@ async def get_doctor_by_id(id_doctor: int, request: Request) -> DoctorOutput:
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[DoctorOutput])
 async def get_all_doctor() -> list[DoctorOutput]:
     return await service.get_all_doctor()
+
+
+@router.patch("/{id_doctor}/{busy_status}/{lunch_status}", status_code=status.HTTP_200_OK, response_model=DoctorOutput)
+async def update_doctor_busy(id_doctor: int, request: Request, busy_status: bool = None, lunch_status: bool = None) -> DoctorOutput:
+    return await service.update_doctor_busy(id_doctor, busy_status, lunch_status, request)
+
+
+@router.patch("/{id_doctor}/{lunch_status}", status_code=status.HTTP_200_OK, response_model=DoctorOutput)
+async def update_doctor_busy(id_doctor: int, lunch_status: bool, request: Request) -> DoctorOutput:
+    return await service.update_doctor_lunch(id_doctor, lunch_status, request)
